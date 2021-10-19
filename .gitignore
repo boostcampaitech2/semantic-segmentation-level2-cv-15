@@ -2,4 +2,5 @@
 *.pth
 *.pt
 *.json
+*.csv
 *pycache*/
