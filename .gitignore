@@ -1,0 +1,7 @@
+*.jpg
+*.pth
+*.pt
+*.json
+*.csv
+*.log
+*pycache*/
