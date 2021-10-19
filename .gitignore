@@ -3,4 +3,5 @@
 *.pt
 *.json
 *.csv
+*.log
 *pycache*/
