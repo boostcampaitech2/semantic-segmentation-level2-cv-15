@@ -10,11 +10,11 @@ def get_optimizer(model, optimizer_name, lr=1e-3, momentum=0.9, weight_decay=5e-
     elif optimizer_name.lower()=="sgd":
         return optim.SGD(model.parameters(), lr=lr, weight_decay=weight_decay)
 
-def get_scheduler(scheduler_name, optimizer, lr_decay_step, milestones, T_max, eta_min,gamma,epoch=None):
+def get_scheduler(scheduler_name, optimizer, lr_decay_step, milestones,T_max, eta_min,gamma,epoch=None):
     if scheduler_name.lower()=="steplr":
         return StepLR(optimizer, lr_decay_step, gamma)
     elif scheduler_name.lower()=="multisteplr":
-        return MultiStepLR(optimizer,milestone,gamma)
+        return MultiStepLR(optimizer,milestones,gamma)
     elif scheduler_name.lower()=="exponentiallr":
         return ExponentialLR(optimizer, gamma)
     elif scheduler_name.lower()=="cosineannealinglr":
