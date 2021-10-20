@@ -29,8 +29,8 @@ def main(config=None):
     Index[0] += 1
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    if(Index[0] == 1):
-        return
+    # if(Index[0] == 1):
+    #     return
 
     # Initialize a new wandb run
     with wandb.init() as run:
@@ -71,7 +71,7 @@ def main(config=None):
 
         # Scheduler 정의
         scheduler_module = getattr(import_module("myoptimizer"), "get_scheduler")  # default: BaseModel
-        scheduler = scheduler_module(hparams.scheduler, optimizer, hparams.lr_decay_step, gamma=0.5)
+        scheduler = scheduler_module(hparams.scheduler, optimizer, hparams.lr_decay_step, milestones, T_max, eta_min, gamma=0.5) 
 
         try:
             mytrain.train(hparams.num_epochs, model, train_loader, val_loader, criterion, optimizer, hparams.saved_dir, hparams.val_every,
@@ -100,7 +100,7 @@ if __name__ == '__main__':
     myconfig.my_config['name'] = myconfig.my_config['name'] + "_" + datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
 
     wandb.login()
-    sweep_id = wandb.sweep(myconfig.my_config, project="semantic_segmentation")
-    wandb.agent(sweep_id, function=main, count=24)
+    sweep_id = wandb.sweep(myconfig.my_config, project="semantic_segmentation_P2P")
+    wandb.agent(sweep_id, function=main,entity='sojung',count=24)
 
-    # train(args)
+    main(args)

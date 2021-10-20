@@ -5,7 +5,7 @@ import torch
 import numpy as np
 from utils import label_accuracy_score, add_hist
 
-def save_model(model, saved_dir, file_name='fcn_resnet101_best_model(pretrained).pt'):
+def save_model(model, saved_dir, file_name='fcn_resnet101_best_model(pretrained)_test.pt'):
     check_point = {'net': model.state_dict()}
 
     try: 
@@ -18,7 +18,7 @@ def save_model(model, saved_dir, file_name='fcn_resnet101_best_model(pretrained)
     output_path = os.path.join(saved_dir, file_name)
     torch.save(model, output_path)
 
-def train(num_epochs, model, data_loader, val_loader, criterion, optimizer, saved_dir, val_every, device, category_names, saved_modelname):
+def train(num_epochs, model, data_loader, val_loader, criterion, optimizer, scheduler, saved_dir, val_every, device, category_names, saved_modelname):
     print(f'Start training..')
     n_class = 11
     best_loss = 9999999
@@ -53,6 +53,7 @@ def train(num_epochs, model, data_loader, val_loader, criterion, optimizer, save
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+            scheduler.step()
             
             outputs = torch.argmax(outputs, dim=1).detach().cpu().numpy()
             masks = masks.detach().cpu().numpy()

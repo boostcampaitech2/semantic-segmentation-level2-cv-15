@@ -23,21 +23,27 @@ my_config = {
         # "resize":
         #     {"value": (256, 192)},
         "optimizer":
-            {"values": ['sgd', 'momentum', 'adam']},
+            {"values": ['adam']},
         "model":
-            {"values": ['fcn_resnet50', 'fcn_resnet101']},
+            {"values": ['fcn_resnet50']},
         "batch_size":
-            {"values": [8, 16]},
+            {"values": [16]},
         "lr":
-            {"values": [0.0001]},
+            {"values": [0.00005]},
         "lr_decay_step":
             {"value": 10},
+        "milestones":
+            {"values":[30,80]},
+        "T_max":
+            {"value":50},
+        "eta_min":
+            {"value":0},
         "criterion":
             {"values": ['cross_entropy']}, #, 'focal', 'label_smoothing', 'F1Loss']},
         "num_epochs":
-            {"value": 3},
+            {"value": 40},
         "scheduler":
-            {"value": 'steplr'},
+            {"value": 'multisteplr'},
         "saved_dir":
             {"value": './saved'},
         "val_every":
