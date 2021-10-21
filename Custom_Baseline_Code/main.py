@@ -14,6 +14,7 @@ from datetime import datetime
 import random
 
 from importlib import import_module
+import sys
 
 def seed_setting(seed):
     torch.manual_seed(seed)
@@ -41,7 +42,8 @@ def main(config=None):
         # dataset
         dataset_module = getattr(import_module("mydataset"), hparams.dataset)
         # train dataset
-        train_dataset = dataset_module(data_dir=hparams.train_path, mode='train', transform=my_aug.train_transform,
+        transform_validation = getattr(import_module("myaugmentations"), hparams.augmentation)
+        train_dataset = dataset_module(data_dir=hparams.train_path, mode='train', transform=transform_validation,
                                         dataset_path=hparams.dataset_path, category_names=hparams.category_names)
         # validation dataset
         val_dataset = dataset_module(data_dir=hparams.val_path, mode='val', transform=my_aug.val_transform,
@@ -74,7 +76,7 @@ def main(config=None):
         scheduler = scheduler_module(hparams.scheduler, optimizer, hparams.lr_decay_step, gamma=0.5)
 
         try:
-            mytrain.train(hparams.num_epochs, model, train_loader, val_loader, criterion, optimizer, hparams.saved_dir, hparams.val_every,
+            mytrain.train(hparams.num_epochs, model, train_loader, val_loader, criterion, optimizer, scheduler, hparams.saved_dir, hparams.val_every,
                         device, category_names=hparams.category_names, saved_modelname=hparams.model+'_best_model.pt')
         except:
             print("*" * 20)
@@ -101,6 +103,6 @@ if __name__ == '__main__':
 
     wandb.login()
     sweep_id = wandb.sweep(myconfig.my_config, project="semantic_segmentation")
-    wandb.agent(sweep_id, function=main, count=24)
+    wandb.agent(sweep_id, function=main, count=4)
 
     # train(args)

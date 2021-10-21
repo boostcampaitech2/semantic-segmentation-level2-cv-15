@@ -18,25 +18,28 @@ my_config = {
             {"value": 'CustomDataLoader'},
         "category_names":
             {"value": ('Backgroud', 'General trash', 'Paper', 'Paper pack', 'Metal', 'Glass', 'Plastic', 'Styrofoam', 'Plastic bag', 'Battery', 'Clothing')},
-        # "augmentation":
-        #     {"value": 'my_transform'},
+        "augmentation":
+            {"values": ['train_transform_1', 'train_transform']},
+            #{"value": 'train_transform'},
         # "resize":
         #     {"value": (256, 192)},
         "optimizer":
-            {"values": ['sgd', 'momentum', 'adam']},
+            {"values": ["adam","adamw"]},
+            #{"value": "adam"},
         "model":
-            {"values": ['fcn_resnet50', 'fcn_resnet101']},
+            {"value": 'fcn_resnet50'},
         "batch_size":
-            {"values": [8, 16]},
+            {"value": 16},
         "lr":
-            {"values": [0.0001]},
+            {"value": 0.0001},
         "lr_decay_step":
             {"value": 10},
         "criterion":
-            {"values": ['cross_entropy']}, #, 'focal', 'label_smoothing', 'F1Loss']},
+            {"value": 'cross_entropy'}, #, 'focal', 'label_smoothing', 'F1Loss']},
         "num_epochs":
-            {"value": 3},
+            {"value": 5},
         "scheduler":
+            #{"values": ['steplr', 'CosineAnnealingLR']},
             {"value": 'steplr'},
         "saved_dir":
             {"value": './saved'},
