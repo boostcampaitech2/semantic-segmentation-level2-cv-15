@@ -3,6 +3,7 @@ from torchvision import models
 
 def config_model(model_name, num_classes):
     model = None
+    
     available_models = ['fcn_resnet50', 'fcn_resnet101']
 
     if model_name in available_models:

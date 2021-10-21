@@ -27,13 +27,13 @@ my_config = {
         "model":
             {"values": ['fcn_resnet50']},
         "batch_size":
-            {"values": [16]},
+            {"value": 16},
         "lr":
-            {"values": [0.00005]},
+            {"value": 0.00005},
         "lr_decay_step":
             {"value": 10},
         "milestones":
-            {"values":[30,80]},
+            {"value":(30,80)},
         "T_max":
             {"value":50},
         "eta_min":

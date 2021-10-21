@@ -71,10 +71,10 @@ def main(config=None):
 
         # Scheduler 정의
         scheduler_module = getattr(import_module("myoptimizer"), "get_scheduler")  # default: BaseModel
-        scheduler = scheduler_module(hparams.scheduler, optimizer, hparams.lr_decay_step, milestones, T_max, eta_min, gamma=0.5) 
+        scheduler = scheduler_module(hparams.scheduler, optimizer, hparams.lr_decay_step, hparams.milestones, hparams.T_max, hparams.eta_min, gamma=0.5) 
 
         try:
-            mytrain.train(hparams.num_epochs, model, train_loader, val_loader, criterion, optimizer, hparams.saved_dir, hparams.val_every,
+            mytrain.train(hparams.num_epochs, model, train_loader, val_loader, criterion, optimizer, scheduler, hparams.saved_dir, hparams.val_every,
                         device, category_names=hparams.category_names, saved_modelname=hparams.model+'_best_model.pt')
         except:
             print("*" * 20)
@@ -101,6 +101,6 @@ if __name__ == '__main__':
 
     wandb.login()
     sweep_id = wandb.sweep(myconfig.my_config, project="semantic_segmentation_P2P")
-    wandb.agent(sweep_id, function=main,entity='sojung',count=24)
-
-    main(args)
+    wandb.agent(sweep_id, function=main, entity='sojung', count=1)
+    #main(args)
+    # train(args) 
