@@ -8,7 +8,7 @@ log_config = dict(
         init_kwargs=dict(
             project='test',
             entity='ptop',
-            name='mmseg_deeplabv3_r101_hyuns'
+            name='mmseg_deeplabv3_r101'
         ),
         )
 
@@ -18,5 +18,5 @@ dist_params = dict(backend='nccl')
 log_level = 'INFO'
 load_from = None
 resume_from = None
-workflow = [('train', 1),('val', 1)]
+workflow = [('train', 1)]
 cudnn_benchmark = True
