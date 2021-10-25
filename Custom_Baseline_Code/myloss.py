@@ -63,7 +63,9 @@ _criterion_entrypoints = {
     'cross_entropy': nn.CrossEntropyLoss,
     'focal': FocalLoss,
     'label_smoothing': LabelSmoothingLoss,
-    'f1': F1Loss
+    'f1': F1Loss,
+    'SmoothL1' : nn.SmoothL1Loss,
+    'KLDivLoss' : nn.KLDivLoss
 }
 
 def criterion_entrypoint(criterion_name):

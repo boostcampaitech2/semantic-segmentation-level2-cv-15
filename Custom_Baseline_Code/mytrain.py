@@ -5,7 +5,7 @@ import torch
 import numpy as np
 from utils import label_accuracy_score, add_hist
 
-def save_model(model, saved_dir, file_name='fcn_resnet101_best_model(pretrained).pt'):
+def save_model(model, saved_dir, file_name):
     check_point = {'net': model.state_dict()}
 
     try: 
@@ -18,7 +18,7 @@ def save_model(model, saved_dir, file_name='fcn_resnet101_best_model(pretrained)
     output_path = os.path.join(saved_dir, file_name)
     torch.save(model, output_path)
 
-def train(num_epochs, model, data_loader, val_loader, criterion, optimizer, saved_dir, val_every, device, category_names, saved_modelname):
+def train(num_epochs, model, data_loader, val_loader, criterion, optimizer, scheduler, saved_dir, val_every, device, category_names, saved_modelname):
     print(f'Start training..')
     n_class = 11
     best_loss = 9999999
@@ -29,7 +29,6 @@ def train(num_epochs, model, data_loader, val_loader, criterion, optimizer, save
 
         total_loss = 0
         cnt = 0
-
         hist = np.zeros((n_class, n_class))
         for step, (images, masks, _) in enumerate(data_loader):
             images = torch.stack(images)       
@@ -40,19 +39,20 @@ def train(num_epochs, model, data_loader, val_loader, criterion, optimizer, save
             
             # device 할당
             model = model.to(device)
-            
+
             # inference
             outputs = model(images)['out']
-            
+
             # loss 계산 (cross entropy loss)
             loss = criterion(outputs, masks)
 
             total_loss += loss
             cnt += 1
-
+            
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+            # scheduler.step(loss)
             
             outputs = torch.argmax(outputs, dim=1).detach().cpu().numpy()
             masks = masks.detach().cpu().numpy()
@@ -64,7 +64,7 @@ def train(num_epochs, model, data_loader, val_loader, criterion, optimizer, save
             if (step + 1) % 25 == 0:
                 print(f'Epoch [{epoch+1}/{num_epochs}], Step [{step+1}/{len(data_loader)}], \
                         Loss: {round(loss.item(),4)}, mIoU: {round(mIoU,4)}')
-        
+
         _, _, train_mIoU, _, _ = label_accuracy_score(hist)
         train_avg_loss = total_loss / cnt
 
@@ -83,4 +83,4 @@ def train(num_epochs, model, data_loader, val_loader, criterion, optimizer, save
                 print(f"Best performance at epoch: {epoch + 1}")
                 print(f"Save model in {saved_dir}")
                 best_mIoU = val_avg_mIoU
-                save_model(model, saved_dir, saved_modelname)
+                save_model(model, saved_dir, saved_modelname+'_best_model.pt')

@@ -18,26 +18,28 @@ my_config = {
             {"value": 'CustomDataLoader'},
         "category_names":
             {"value": ('Backgroud', 'General trash', 'Paper', 'Paper pack', 'Metal', 'Glass', 'Plastic', 'Styrofoam', 'Plastic bag', 'Battery', 'Clothing')},
-        # "augmentation":
-        #     {"value": 'my_transform'},
-        # "resize":
-        #     {"value": (256, 192)},
+        "train_transform":
+            {"values": ['train_transform1']},
+        "val_transform":
+            {"value": 'val_transform'},
+        "test_transform":
+            {"value": 'test_transform'},
         "optimizer":
-            {"values": ['sgd', 'momentum', 'adam']},
+            {"value": 'adam'},
         "model":
-            {"values": ['fcn_resnet50', 'fcn_resnet101']},
+            {"values": ['deeplabv3+']},
         "batch_size":
-            {"values": [8, 16]},
+            {"value": 16},
         "lr":
-            {"values": [0.0001]},
+            {"values": [0.00002]},
         "lr_decay_step":
             {"value": 10},
         "criterion":
-            {"values": ['cross_entropy']}, #, 'focal', 'label_smoothing', 'F1Loss']},
+            {"values": ['cross_entropy']},
         "num_epochs":
-            {"value": 3},
+            {"value": 200},
         "scheduler":
-            {"value": 'steplr'},
+            {"values": ['reducelronplateau']},
         "saved_dir":
             {"value": './saved'},
         "val_every":

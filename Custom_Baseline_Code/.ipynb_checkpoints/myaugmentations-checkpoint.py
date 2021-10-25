@@ -16,17 +16,18 @@ test_transform = A.Compose([
 train_transform1 = A.Compose([
                             # A.RandomScale(always_apply=False, p=0.2, interpolation=2, scale_limit=(-0.2, 0.01)),
                             A.HorizontalFlip(always_apply=False, p=0.5),
-                            A.GaussNoise(always_apply=False, p=0.1, var_limit=(2.0, 5.0)),
-
-                            A.CoarseDropout(always_apply=False, p=0.1, max_holes=2, max_height=2, max_width=2, min_holes=2, min_height=2, min_width=2),
+                            A.CoarseDropout(always_apply=False, p=0.1, max_holes=8, max_height=8, max_width=8, min_holes=8, min_height=8, min_width=8),
+                            A.GaussNoise(always_apply=False, p=0.1, var_limit=(10.0, 50.0)),
                             A.OneOf([
                                 A.RandomGamma(always_apply=False, p=1.0, gamma_limit=(110, 140), eps=1e-07),
                                 A.RandomBrightnessContrast(always_apply=False, p=1.0, brightness_limit=(0, 0.03), contrast_limit=(-0.1, 0.1), brightness_by_max=True),
                             ], p=0.1),
+                            
                             A.OneOf([
-                                A.HueSaturationValue(always_apply=False, p=1.0, hue_shift_limit=(-5, 5), sat_shift_limit=(-10, 10), val_shift_limit=(-5, 5)),
-                                A.RGBShift(always_apply=False, p=1.0, r_shift_limit=(-5, 5), g_shift_limit=(-5, 5), b_shift_limit=(-5, 5)),
+                                A.HueSaturationValue(always_apply=False, p=1.0, hue_shift_limit=(-10, 10), sat_shift_limit=(-20, 20), val_shift_limit=(-10, 10)),
+                                A.RGBShift(always_apply=False, p=1.0, r_shift_limit=(-20, 20), g_shift_limit=(-20, 20), b_shift_limit=(-20, 20)),
                             ], p=0.1),
+
                             ToTensorV2()
                             ])
 

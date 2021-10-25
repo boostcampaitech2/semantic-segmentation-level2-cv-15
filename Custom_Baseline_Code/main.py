@@ -1,6 +1,7 @@
 import myaugmentations as my_aug
 import myconfig
 import mydataset
+import mymodel
 import myloss
 import myoptimizer
 import mytrain
@@ -10,7 +11,7 @@ import wandb
 import numpy as np
 import argparse
 
-from datetime import datetime
+from datetime import datetime, timedelta
 import random
 
 from importlib import import_module
@@ -29,25 +30,29 @@ def main(config=None):
     Index[0] += 1
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    if(Index[0] == 1):
-        return
-
     # Initialize a new wandb run
     with wandb.init() as run:
-        now = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+        now = datetime.now() + timedelta(hours=9)
+        now = now.strftime("%Y-%m-%d_%H:%M:%S")
         run.name = run.config.name + f"_{Index[0]}"
         hparams = run.config
 
         # dataset
         dataset_module = getattr(import_module("mydataset"), hparams.dataset)
+
+        transform_module = getattr(import_module("myaugmentations"), "get_transform")
+        train_transform = transform_module(transform_name=hparams.train_transform)
+        val_transform = transform_module(transform_name=hparams.val_transform)
+        test_transform = transform_module(transform_name=hparams.test_transform)
+
         # train dataset
-        train_dataset = dataset_module(data_dir=hparams.train_path, mode='train', transform=my_aug.train_transform,
+        train_dataset = dataset_module(data_dir=hparams.train_path, mode='train', transform=train_transform,
                                         dataset_path=hparams.dataset_path, category_names=hparams.category_names)
         # validation dataset
-        val_dataset = dataset_module(data_dir=hparams.val_path, mode='val', transform=my_aug.val_transform,
+        val_dataset = dataset_module(data_dir=hparams.val_path, mode='val', transform=val_transform,
                                         dataset_path=hparams.dataset_path, category_names=hparams.category_names)
         # test dataset
-        test_dataset = dataset_module(data_dir=hparams.test_path, mode='test', transform=my_aug.test_transform,
+        test_dataset = dataset_module(data_dir=hparams.test_path, mode='test', transform=test_transform,
                                         dataset_path=hparams.dataset_path, category_names=hparams.category_names)
         
         # DataLoader
@@ -71,23 +76,15 @@ def main(config=None):
 
         # Scheduler 정의
         scheduler_module = getattr(import_module("myoptimizer"), "get_scheduler")  # default: BaseModel
-        scheduler = scheduler_module(hparams.scheduler, optimizer, hparams.lr_decay_step, gamma=0.5)
+        scheduler = scheduler_module(hparams.scheduler, optimizer, hparams.lr_decay_step, 0.5)
 
-        try:
-            mytrain.train(hparams.num_epochs, model, train_loader, val_loader, criterion, optimizer, hparams.saved_dir, hparams.val_every,
-                        device, category_names=hparams.category_names, saved_modelname=hparams.model+'_best_model.pt')
-        except:
-            print("*" * 20)
-            print(f"Training Error - {run.name}")
-            print("*" * 20)
-        # This simple block simulates a training loop logging metrics
-        # offset = random.random() / 5
-        # for ii in range(2, 10):
-        #     acc = 1 - 2 ** -ii - random.random() / ii - offset
-        #     loss = 2 ** -ii + random.random() / ii + offset
-            
-        #     # Log metrics from your script to W&B
-        #     wandb.log({"acc": acc, "loss": loss})
+        # try:
+        mytrain.train(hparams.num_epochs, model, train_loader, val_loader, criterion, optimizer, scheduler, hparams.saved_dir, hparams.val_every,
+                    device, category_names=hparams.category_names, saved_modelname=hparams.model)
+        # except:
+        #     print("*" * 20)
+        #     print(f"Training Error - {run.name}")
+        #     print("*" * 20)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -101,6 +98,6 @@ if __name__ == '__main__':
 
     wandb.login()
     sweep_id = wandb.sweep(myconfig.my_config, project="semantic_segmentation")
-    wandb.agent(sweep_id, function=main, count=24)
+    wandb.agent(sweep_id, function=main, count=1)
 
     # train(args)
