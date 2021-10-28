@@ -1,5 +1,8 @@
 *.jpg
+*.png
 *.pth
 *.pt
 *.json
+*.csv
+#*.ipynb
 *pycache*/
