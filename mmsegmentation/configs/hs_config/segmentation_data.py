@@ -16,10 +16,11 @@ palette = [
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations'),
-    #dict(type='Resize', img_scale=(2048, 1024), ratio_range=(0.5, 2.0)),
-    #dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
+    # dict(type='Resize', img_scale=(2048, 1024), ratio_range=(0.5, 2.0)),
+    # dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='RandomFlip', prob=0.5),
     dict(type='PhotoMetricDistortion'),
+    dict(type="CropNonEmptyMaskIfExists"),
     dict(type='Normalize', **img_norm_cfg),
     #dict(type='Pad', size=crop_size, pad_val=0, seg_pad_val=255),
     dict(type='DefaultFormatBundle'),
@@ -30,7 +31,7 @@ test_pipeline = [
     dict(
         type='MultiScaleFlipAug',
         img_scale=(512, 512),
-        # img_ratios=[0.5, 0.75, 1.0, 1.25, 1.5, 1.75],
+        img_ratios=[0.5, 0.75, 1.0, 1.25, 1.5, 1.75],
         flip=False,
         transforms=[
             dict(type='Resize', keep_ratio=True),
@@ -42,29 +43,31 @@ test_pipeline = [
 ]
 
 data = dict(
-    samples_per_gpu=16,
+    samples_per_gpu=8,
     workers_per_gpu=8,
     train=dict(
         classes=classes,
         palette=palette,
         type=dataset_type,
         reduce_zero_label=False, 
-        img_dir=data_root + "images",
-        ann_dir=data_root + "annotations",
+        img_dir=data_root + "images/training",
+        ann_dir=data_root + "annotations/training",
         pipeline=train_pipeline),
     val=dict(
         classes=classes,
         palette=palette,
         type=dataset_type,
         reduce_zero_label=False,
-        img_dir=data_root + "images",
-        ann_dir=data_root + "annotations",
+        img_dir=data_root + "images/validation",
+        ann_dir=data_root + "annotations/validation",
         pipeline=test_pipeline),
     test=dict(
         classes=classes,
         palette=palette,
         type=dataset_type,
         reduce_zero_label=False,
-        img_dir=data_root + "test",
-        pipeline=test_pipeline))
+        img_dir=data_root + "images",
+        #ann_dir=data_root + "annotations",
+        pipeline=test_pipeline),
+    )
 

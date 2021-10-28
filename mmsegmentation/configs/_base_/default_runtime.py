@@ -2,16 +2,15 @@
 log_config = dict(
     interval=50,
     hooks=[
-        dict(type='TextLoggerHook', by_epoch=False),
+        dict(type='TextLoggerHook', by_epoch=True),
         # dict(type='TensorboardLoggerHook')
-        dict(type='WandbLoggerHook', interval=500,
+        dict(type='WandbLoggerHook', interval=100,
         init_kwargs=dict(
             project='test',
             entity='ptop',
-            name='mmseg_deeplabv3_r101_hyuns'
+            name='mmseg_deeplabv3_r101_test'
         ),
         )
-
     ])
 # yapf:enable
 dist_params = dict(backend='nccl')

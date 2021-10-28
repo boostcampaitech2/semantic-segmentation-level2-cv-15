@@ -60,5 +60,13 @@ data = dict(
         img_dir=data_root + "images",
         ann_dir=data_root + "annotations",
         pipeline=test_pipeline),
-        )
+    test=dict(
+        classes=classes,
+        palette=palette,
+        type=dataset_type,
+        reduce_zero_label=False,
+        img_dir=data_root + "images",
+        #ann_dir=data_root + "annotations",
+        pipeline=test_pipeline),
+    )
 
