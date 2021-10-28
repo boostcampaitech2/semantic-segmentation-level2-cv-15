@@ -49,9 +49,9 @@ def train(num_epochs, model, data_loader, val_loader, criterion, optimizer, sche
             total_loss += loss
             cnt += 1
             
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
+            # optimizer.zero_grad()
+            # loss.backward()
+            # optimizer.step()
             # scheduler.step(loss)
             
             outputs = torch.argmax(outputs, dim=1).detach().cpu().numpy()
@@ -59,6 +59,15 @@ def train(num_epochs, model, data_loader, val_loader, criterion, optimizer, sche
             
             hist = add_hist(hist, masks, outputs, n_class=n_class)
             acc, acc_cls, mIoU, fwavacc, IoU = label_accuracy_score(hist)
+
+            # print(f"[Before] loss = {loss}, mIoU = {mIoU}")
+            newloss = loss + mIoU
+            optimizer.zero_grad()
+            newloss.backward()
+            optimizer.step()
+            # print(f"[After] loss = {loss}, mIoU = {mIoU}")
+            # scheduler.step(loss)
+
             
             # step 주기에 따른 loss 출력
             if (step + 1) % 25 == 0:
