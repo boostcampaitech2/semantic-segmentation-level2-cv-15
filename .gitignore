@@ -4,5 +4,17 @@
 *.pt
 *.json
 *.csv
+*.ipynb
+._*
+<<<<<<< HEAD
 #*.ipynb
 *pycache*/
+=======
+*.log
+*nohup*.*
+*pycache*/
+*my_venv*/
+*hrnet_venv*/
+*saved*/
+*wandb*/
+>>>>>>> 131f35b1c8df64796d3a338e042863b00a0560ba
