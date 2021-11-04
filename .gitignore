@@ -1,6 +1,7 @@
 *.jpg
 *.png
 *.pth
+*.pth
 *.pt
 *.json
 *.csv
