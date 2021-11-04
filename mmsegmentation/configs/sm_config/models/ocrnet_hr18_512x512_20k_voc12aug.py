@@ -1,7 +1,7 @@
 _base_ = [
     '../_base_/models/ocrnet_hr18.py',
-    'coco-trash.py', 'default_runtime.py',
-    'test_schedule.py'
+    '../dataset/coco-trash.py', '../runtime/default_runtime.py',
+    '../schedules/test_schedule.py'
 ]
 norm_cfg = dict(type='BN', requires_grad=True)
 model = dict(decode_head=[
