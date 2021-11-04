@@ -282,3 +282,50 @@ class EncoderDecoder(BaseSegmentor):
         # unravel batch dim
         seg_pred = list(seg_pred)
         return seg_pred
+
+@SEGMENTORS.register_module()
+class EncoderDecoderInference(EncoderDecoder):
+    """Encoder Decoder segmentors.
+
+    EncoderDecoder typically consists of backbone, decode_head, auxiliary_head.
+    Note that auxiliary_head is only used for deep supervision during training,
+    which could be dumped during inference.
+    """
+
+    def __init__(self,
+                 backbone,
+                 decode_head,
+                 neck=None,
+                 auxiliary_head=None,
+                 train_cfg=None,
+                 test_cfg=None,
+                 pretrained=None,
+                 init_cfg=None):
+        super(EncoderDecoder, self).__init__(init_cfg)
+        if pretrained is not None:
+            assert backbone.get('pretrained') is None, \
+                'both backbone and segmentor set pretrained weight'
+            backbone.pretrained = pretrained
+        self.backbone = builder.build_backbone(backbone)
+        if neck is not None:
+            self.neck = builder.build_neck(neck)
+        self._init_decode_head(decode_head)
+        self._init_auxiliary_head(auxiliary_head)
+
+        self.train_cfg = train_cfg
+        self.test_cfg = test_cfg
+
+        assert self.with_decode_head
+
+    def simple_test(self, img, img_meta, rescale=True):
+        """Simple test with single image."""
+        seg_logit = self.inference(img, img_meta, rescale)
+        return seg_logit.cpu().numpy()
+
+    def aug_test(self, imgs, img_metas, rescale=True):
+        seg_logit = self.inference(imgs[0], img_metas[0], rescale)
+        for i in range(1, len(imgs)):
+            cur_seg_logit = self.inference(imgs[i], img_metas[i], rescale)
+            seg_logit += cur_seg_logit
+        seg_logit /= len(imgs)
+        return seg_logit.cpu().numpy()
