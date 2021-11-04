@@ -1,5 +1,13 @@
 *.jpg
 *.pth
+*.pth
 *.pt
 *.json
+*.csv
+*.log
+*nohup*.*
 *pycache*/
+*my_venv*/
+*hrnet_venv*/
+*saved*/
+*wandb*/
