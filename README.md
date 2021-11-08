@@ -1,30 +1,14 @@
-# Standard Readme
-
-[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
-
-A standard style for README files
-
-Your README file is normally the first entry point to your code. It should tell people why they should use your module, how they can install it, and how they can use it. Standardizing how you write your README makes creating and maintaining your READMEs easier. Great documentation takes work!
-
-This repository contains:
-
-1. [The specification](spec.md) for how a standard README should look.
-2. A link to [a linter](https://github.com/RichardLitt/standard-readme-preset) you can use to keep your README maintained ([work in progress](https://github.com/RichardLitt/standard-readme/issues/5)).
-3. A link to [a generator](https://github.com/RichardLitt/generator-standard-readme) you can use to create standard READMEs.
-4. [A badge](#badge) to point to this spec.
-5. [Examples of standard READMEs](example-readmes/) - such as this file you are reading.
-
-Standard Readme is designed for open source libraries. Although it’s [historically](#background) made for Node and npm projects, it also applies to libraries in other languages and package managers.
-
+# Semantic Segmentation (재활용 쓰레기 분류)
 
 ## Table of Contents
 
 - [Background](#background)
-- [Install](#install)
 - [Usage](#usage)
-- [Badge](#badge)
-- [Example Readmes](#example-readmes)
-- [Contributing](#contributing)
+    - [Structure](#Structure)
+    - [Requirements](#install)
+    - [Getting_Started](#Getting_Started)
+- [Result](#Result)
+- [Regerence](#Reference)
 
 ## Background
 
@@ -37,41 +21,74 @@ Standard Readme is designed for open source libraries. Although it’s [historic
 여러분에 의해 만들어진 우수한 성능의 모델은 쓰레기장에 설치되어 정확한 분리수거를 돕거나, 어린아이들의 분리수거 교육 등에 사용될 수 있을 것입니다. 부디 지구를 위기로부터 구해주세요! 🌎
 
 
-## Install
-
-
+## Usage
+### Structure
+```sh
+|-- Custom_Baseline_Code # baseline code for team
+|   |-- deeplab_xception_model
+|   |-- main.py
+|   |-- myaugmentations.py
+|   |-- myconfig.py
+|   |-- mydataset.py
+|   |-- myloss.py
+|   |-- mymodel.py
+|   |-- myoptimizer.py
+|   |-- mytrain.py
+|   |-- myvalidation.py
+|   |-- requirements.txt
+|   |-- utils.py
+|-- EDA # EDA ipynb files
+|   |-- augmentation_test.ipynb
+|   |-- avg_check_eda.ipynb
+|   |-- seg_test.ipynb
+|   |-- test_output.ipynb
+|   |-- train_output.ipynb
+|   `-- utils.py
+|-- etc
+|   `-- smp_practice.ipynb # guide for SMP library
+|-- mmsegmentation
+|   |-- configs # config folder for mmsegmentation
+|   |-- dataset
+|   |-- mmseg # mmsegmentation core
+|   `-- tools
+`-- utils
+    |-- SWA.py
+    |-- Stratified k-Fold.ipynb
+    |-- ensamble_and_crf__viz.ipynb
+    |-- ensemble_all.ipynb
+    |-- mmseg_ensemble.ipynb
+    `-- mmseg_inference.ipynb
+```
+### Install
 ```sh
 $ pip install -r requirements.txt
 ```
 
-## Usage
+### Getting_Started
+1. Custom_Baseline_Code
+```sh
+$ cd Custom_Baseline_Code
+$ python main.py
 
-This is only a documentation package.
+[Parameter setting : myconfig.py]
+```
+2. mmsegmentation
+```sh
+$ cd mmsegmentation
+$ python ./tools/train.py [Config File]
+  [ex) python ./tools/train.py ./config/1.myconfig/upernet_swin.py]
+```
+
+## Result
+
+<img src="https://github.com/boostcampaitech2/semantic-segmentation-level2-cv-15/tree/master/Custom_Baseline_Code/image/image0.JPG" width="600px" height="400px"></img><br/>
+
+<img src="https://github.com/boostcampaitech2/semantic-segmentation-level2-cv-15/tree/master/Custom_Baseline_Code/image/image1.JPG" width="800px" height="400px"></img><br/>
+
+
+## Regerence
 
 ```sh
-$ standard-readme-spec
-# Prints out the standard-readme spec
+*
 ```
 
-
-## Badge
-
-If your README is compliant with Standard-Readme and you're on GitHub, it would be great if you could add the badge. This allows people to link back to this Spec, and helps adoption of the README. The badge is **not required**.
-
-[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
-
-To add in Markdown format, use this code:
-
-```
-[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
-```
-
-## Example Readmes
-
-To see how the specification has been applied, see the [example-readmes](example-readmes/).
-
-
-## Contributors
-
-This project exists thanks to all the people who contribute. 
-<a href="https://github.com/RichardLitt/standard-readme/graphs/contributors"><img src="https://opencollective.com/standard-readme/contributors.svg?width=890&button=false" /></a>
