@@ -81,9 +81,9 @@ $ python ./tools/train.py [Config File]
 
 ## Result
 
-<img src="https://github.com/boostcampaitech2/semantic-segmentation-level2-cv-15/tree/master/Custom_Baseline_Code/image/image0.GIF" width="600px" height="400px"></img><br/>
+<img src="https://github.com/boostcampaitech2/semantic-segmentation-level2-cv-15/blob/master/Custom_Baseline_Code/image/image0.GIF" width="600px" height="400px"></img><br/>
 
-<img src="https://github.com/boostcampaitech2/semantic-segmentation-level2-cv-15/tree/master/Custom_Baseline_Code/image/image1.GIF" width="800px" height="400px"></img><br/>
+<img src="https://github.com/boostcampaitech2/semantic-segmentation-level2-cv-15/blob/master/Custom_Baseline_Code/image/image1.GIF" width="800px" height="400px"></img><br/>
 
 
 ## Regerence
