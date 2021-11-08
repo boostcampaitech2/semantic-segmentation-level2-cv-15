@@ -4,11 +4,11 @@
 
 - [Background](#background)
 - [Usage](#usage)
-    - [Structure](#Structure)
-    - [Requirements](#install)
-    - [Getting_Started](#Getting_Started)
+  - [Structure](#Structure)
+  - [Requirements](#install)
+  - [Getting_Started](#Getting_Started)
 - [Result](#Result)
-- [Regerence](#Reference)
+- [Reference](#Reference)
 
 ## Background
 
@@ -19,7 +19,6 @@
 따라서 우리는 사진에서 쓰레기를 Segmentation하는 모델을 만들어 이러한 문제점을 해결해보고자 합니다. 문제 해결을 위한 데이터셋으로는 배경, 일반 쓰레기, 플라스틱, 종이, 유리 등 11 종류의 쓰레기가 찍힌 사진 데이터셋이 제공됩니다.
 
 여러분에 의해 만들어진 우수한 성능의 모델은 쓰레기장에 설치되어 정확한 분리수거를 돕거나, 어린아이들의 분리수거 교육 등에 사용될 수 있을 것입니다. 부디 지구를 위기로부터 구해주세요! 🌎
-
 
 ## Usage
 ### Structure
@@ -60,24 +59,42 @@
     `-- mmseg_inference.ipynb
 ```
 ### Install
-```sh
-$ pip install -r requirements.txt
-```
+- Requirements
+  ```sh
+  $ pip install -r requirements.txt
+  ```
+- MMSegmentation
+  ```sh
+  $ conda create -n open-mmlab python=3.7 -y
+  $ conda activate open-mmlab
+  $ conda install pytorch=1.6.0 torchvision cudatoolkit=10.1 -c pytorch
+
+  $ pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.6.0/index.html
+
+  $ git clone https://github.com/open-mmlab/mmsegmentation.git
+
+  $ cd mmsegmentation
+  $ pip install -e .  # or "python setup.py develop"
+  ```
+- SMP(Segmentation Models Pytorch)
+  ```sh
+  $ pip install git+https://github.com/qubvel/segmentation_models.pytorch
+  ```
 
 ### Getting_Started
 1. Custom_Baseline_Code
-```sh
-$ cd Custom_Baseline_Code
-$ python main.py
+    ```sh
+    $ cd Custom_Baseline_Code
+    $ python main.py
 
-[Parameter setting : myconfig.py]
-```
-2. mmsegmentation
-```sh
-$ cd mmsegmentation
-$ python ./tools/train.py [Config File]
-  [ex) python ./tools/train.py ./config/1.myconfig/upernet_swin.py]
-```
+    [Parameter setting : myconfig.py]
+    ```
+2. MMSegmentation
+    ```sh
+    $ cd mmsegmentation
+    $ python ./tools/train.py [Config File]
+      [ex) python ./tools/train.py ./config/1.myconfig/upernet_swin.py]
+    ```
 
 ## Result
 
@@ -86,9 +103,110 @@ $ python ./tools/train.py [Config File]
 <img src="https://github.com/boostcampaitech2/semantic-segmentation-level2-cv-15/blob/master/Custom_Baseline_Code/image/image1.GIF" width="800px" height="400px"></img><br/>
 
 
-## Regerence
+## Reference
 
-```sh
-*
-```
+<details>
+  <summary>MMSegmentation</summary>
+
+- MMSegmentation
+  ```latex
+  @misc{mmseg2020,
+    title={{MMSegmentation}: OpenMMLab Semantic Segmentation Toolbox and Benchmark},
+    author={MMSegmentation Contributors},
+    howpublished = {\url{https://github.com/open-mmlab/mmsegmentation}},
+    year={2020}
+    }
+  ```
+
+- UPerNet
+  ```latex
+  @inproceedings{xiao2018unified,
+  title={Unified perceptual parsing for scene understanding},
+  author={Xiao, Tete and Liu, Yingcheng and Zhou, Bolei and Jiang, Yuning and Sun, Jian},
+  booktitle={Proceedings of the European Conference on Computer Vision (ECCV)},
+  pages={418--434},
+  year={2018}
+  }
+  ```
+
+- OCRNet
+  ```latex
+  @article{YuanW18,
+    title={Ocnet: Object context network for scene parsing},
+    author={Yuhui Yuan and Jingdong Wang},
+    booktitle={arXiv preprint arXiv:1809.00916},
+    year={2018}
+  }
+
+  @article{YuanCW20,
+    title={Object-Contextual Representations for Semantic Segmentation},
+    author={Yuhui Yuan and Xilin Chen and Jingdong Wang},
+    booktitle={ECCV},
+    year={2020}
+  }
+  ```
+
+- DeepLabV3+
+  ```latex
+  @inproceedings{deeplabv3plus2018,
+    title={Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation},
+    author={Liang-Chieh Chen and Yukun Zhu and George Papandreou and Florian Schroff and Hartwig Adam},
+    booktitle={ECCV},
+    year={2018}
+  }
+  ```
+
+- Swin Transformer
+  ```latex
+  @article{liu2021Swin,
+    title={Swin Transformer: Hierarchical Vision Transformer using Shifted Windows},
+    author={Liu, Ze and Lin, Yutong and Cao, Yue and Hu, Han and Wei, Yixuan and Zhang, Zheng and Lin, Stephen and Guo, Baining},
+    journal={arXiv preprint arXiv:2103.14030},
+    year={2021}
+  }
+  ```
+
+- HRNet
+  ```latex
+  @inproceedings{SunXLW19,
+    title={Deep High-Resolution Representation Learning for Human Pose Estimation},
+    author={Ke Sun and Bin Xiao and Dong Liu and Jingdong Wang},
+    booktitle={CVPR},
+    year={2019}
+  }
+  ```
+</details>
+
+<details>
+  <summary>SMP</summary>
+  
+  - SMP
+    ```latex
+    @misc{Yakubovskiy:2019,
+      Author = {Pavel Yakubovskiy},
+      Title = {Segmentation Models Pytorch},
+      Year = {2020},
+      Publisher = {GitHub},
+      Journal = {GitHub repository},
+      Howpublished = {\url{https://github.com/qubvel/segmentation_models.pytorch}}
+    }
+    ```
+
+  - EfficientNet
+    ```latex
+      @misc{tan2020efficientnet,
+        title={EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks}, 
+        author={Mingxing Tan and Quoc V. Le},
+        year={2020},
+        eprint={1905.11946},
+        archivePrefix={arXiv},
+        primaryClass={cs.LG}
+        }
+    ```
+
+    ```bash
+    git clone https://github.com/lukemelas/EfficientNet-PyTorch
+    ```
+</details>
+
 
